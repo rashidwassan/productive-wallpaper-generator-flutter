@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_daily_vocab_wallpaper_generator/pages/splash_screen.dart';
 
 void main() {
   runApp(WallpaperApp());
@@ -12,6 +13,8 @@ class WallpaperApp extends StatefulWidget {
 class _WallpaperAppState extends State<WallpaperApp> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return MaterialApp(
+      home: SplashScreen(),
+    );
   }
 }
