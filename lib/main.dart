@@ -14,6 +14,7 @@ class _WallpaperAppState extends State<WallpaperApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
   }

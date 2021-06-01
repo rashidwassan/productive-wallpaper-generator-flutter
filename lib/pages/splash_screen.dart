@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_daily_vocab_wallpaper_generator/pages/data_entry_screen.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -24,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   _navigate() {
     Future.delayed(const Duration(seconds: 2), () {
-      // Navigator.pushReplacementNamed(context, Login.id);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => DataEntryScreen()));
     });
   }
 
@@ -40,12 +42,25 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
-      child: Center(
-        child: Image.asset(
-          'assets/images/book_icon.png',
-          width: _animation.value * (context.percentWidth * 65),
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+              image: AssetImage('assets/images/1.png'), fit: BoxFit.cover),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/book_icon.png',
+                width: _animation.value * (context.percentWidth * 65),
+              ),
+              16.heightBox,
+              'InfoWall'.text.size(_animation.value * 26).white.makeCentered()
+            ],
+          ),
         ),
       ),
     );
