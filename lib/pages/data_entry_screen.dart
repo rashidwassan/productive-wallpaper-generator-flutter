@@ -16,10 +16,16 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
       builder: (context, child) => Scaffold(
         body: Consumer<WallpaperProvider>(
           builder: (context, value, child) => GestureDetector(
-            onDoubleTap: () {
-              value.changeWallpaper();
+            onPanUpdate: (details) {
+              if (details.delta.dx > 100) {
+                value.changeToNextWallpaper();
+              }
+              if (details.delta.dx < 100) {
+                value.changeToPreviousWallpaper();
+              }
             },
             child: Container(
+              height: context.percentHeight * 100,
               decoration: BoxDecoration(
                 color: Colors.white,
                 image: DecorationImage(
@@ -28,49 +34,50 @@ class _DataEntryScreenState extends State<DataEntryScreen> {
                 ),
               ),
               child: SafeArea(
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Write Title',
-                          hintStyle: normalSizeText.copyWith(
-                            color: Colors.white54,
-                            fontSize: 30,
-                          ),
-                          border: InputBorder.none),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: normalSizeText.copyWith(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 5),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildWordColumn(),
-                          _buildWordColumn(),
-                          Column(
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Container(
+                    height: context.percentHeight * 100,
+                    child: Column(
+                      children: [
+                        TextField(
+                          decoration: InputDecoration(
+                              hintText: 'Write Title',
+                              hintStyle: normalSizeText.copyWith(
+                                color: Colors.white54,
+                                fontSize: 30,
+                              ),
+                              border: InputBorder.none),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                          style: normalSizeText.copyWith(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 5),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              _buildFactField(),
-                              _buildFactField(),
+                              _buildWordColumn(),
+                              _buildWordColumn(),
+                              _buildWordColumn(),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 50,
-                      width: double.infinity,
-                      child: GestureDetector(
-                        onTap: () {
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
-                    )
-                  ],
-                ).p(24),
+                        ),
+                        Container(
+                          height: 50,
+                          width: double.infinity,
+                          child: GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
+                        )
+                      ],
+                    ).p(24),
+                  ),
+                ),
               ),
             ),
           ),
@@ -155,7 +162,7 @@ TextStyle normalSizeText = TextStyle(
   shadows: [
     Shadow(
       offset: const Offset(2.0, 2.0),
-      blurRadius: 7.0,
+      blurRadius: 10.0,
       color: Colors.black.withOpacity(0.5), //color of shadow with opacity
     ),
   ],
