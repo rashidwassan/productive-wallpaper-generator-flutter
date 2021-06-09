@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_daily_vocab_wallpaper_generator/providers/wallpaper_path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -9,75 +8,73 @@ class DataEntryScreen extends StatefulWidget {
 }
 
 class _DataEntryScreenState extends State<DataEntryScreen> {
+  String src =
+      'https://source.unsplash.com/random/1440x2560?v=${DateTime.now().millisecondsSinceEpoch}';
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => WallpaperProvider(),
-      builder: (context, child) => Scaffold(
-        body: Consumer<WallpaperProvider>(
-          builder: (context, value, child) => GestureDetector(
-            onPanUpdate: (details) {
-              if (details.delta.dx > 100) {
-                value.changeToNextWallpaper();
-              }
-              if (details.delta.dx < 100) {
-                value.changeToPreviousWallpaper();
-              }
-            },
-            child: Container(
-              height: context.percentHeight * 100,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                image: DecorationImage(
-                  image: AssetImage('assets/images/${value.wallpaper_no}.png'),
-                  fit: BoxFit.cover,
+    return Scaffold(
+      body: GestureDetector(
+        onDoubleTap: () {
+          setState(() {
+            src =
+                'https://source.unsplash.com/random/1440x2560?v=${DateTime.now().millisecondsSinceEpoch}';
+          });
+        },
+        child: Container(
+          height: context.percentHeight * 100,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            image: DecorationImage(
+                image: NetworkImage(
+                  src,
                 ),
-              ),
-              child: SafeArea(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Container(
-                    height: context.percentHeight * 100,
-                    child: Column(
-                      children: [
-                        TextField(
-                          decoration: InputDecoration(
-                              hintText: 'Write Title',
-                              hintStyle: normalSizeText.copyWith(
-                                color: Colors.white54,
-                                fontSize: 30,
-                              ),
-                              border: InputBorder.none),
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
-                          style: normalSizeText.copyWith(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 5),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              _buildWordColumn(),
-                              _buildWordColumn(),
-                              _buildWordColumn(),
-                            ],
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.75), BlendMode.darken)),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Container(
+                height: context.percentHeight * 100,
+                child: Column(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Write Title',
+                          hintStyle: normalSizeText.copyWith(
+                            color: Colors.white54,
+                            fontSize: 30,
                           ),
-                        ),
-                        Container(
-                          height: 50,
-                          width: double.infinity,
-                          child: GestureDetector(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                            },
-                          ),
-                        )
-                      ],
-                    ).p(24),
-                  ),
-                ),
+                          border: InputBorder.none),
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      style: normalSizeText.copyWith(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 5),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _buildWordColumn(),
+                          _buildWordColumn(),
+                          _buildWordColumn(),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: GestureDetector(
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                        },
+                      ),
+                    )
+                  ],
+                ).p(24),
               ),
             ),
           ),
